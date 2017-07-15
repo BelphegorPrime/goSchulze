@@ -19,4 +19,10 @@ var routes = Routes{
 		"/new/question",
 		new_question_func,
 	},
+	Route{
+		"get_question",
+		"POST",
+		"/get/question",
+		get_question_func,
+	},
 }

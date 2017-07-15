@@ -7,15 +7,17 @@ import Background, { appendMuiBackground, dark, light } from 'material-ui-backgr
 import Sidebar from './sidebar/index'
 import Content from './content/index'
 
+import getQuestion from './../actions/getQuestion'
+
 class VoteApp extends Component {
 
     constructor(props) {
         super(props)
+        props.dispatch({type: "SET_UUID", uuid: props.location.search.split("=")[1]})
+        props.dispatch(getQuestion(props.location.search.split("=")[1]))
     }
 
     render() {
-        console.log(this.props)
-        console.log(this.props.params)
         return <MuiThemeProvider muiTheme={appendMuiBackground(getMuiTheme(lightBaseTheme), dark)}>
             <div className="site-content">
                 <Background className="background">

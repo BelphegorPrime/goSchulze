@@ -8,17 +8,22 @@ import (
 	"time"
 )
 
-func new_question_func(rw http.ResponseWriter, req *http.Request){
+func new_question_func(rw http.ResponseWriter, req *http.Request) {
 	requestContent := lib.GetRequestContentFromRequest(req)
 
 	if !isQuestionAlreadyInDb(db, requestContent["uuid"].(string)) {
 		insertNewQuestion(db, requestContent["uuid"].(string), requestContent["question"].(string), requestContent["possibleAnswers"].([]interface{}))
-	}else{
+	} else {
 		removeQuestion(db, requestContent["uuid"].(string))
 		insertNewQuestion(db, requestContent["uuid"].(string), requestContent["question"].(string), requestContent["possibleAnswers"].([]interface{}))
 	}
 
 	rw.Write([]byte([]byte("true")))
+}
+
+func get_question_func(rw http.ResponseWriter, req *http.Request) {
+	requestContent := lib.GetRequestContentFromRequest(req)
+	getQuestion(requestContent["uuid"].(string))
 }
 
 func isQuestionAlreadyInDb(db *sql.DB, uuid string) bool {
@@ -34,7 +39,7 @@ func isQuestionAlreadyInDb(db *sql.DB, uuid string) bool {
 	return false
 }
 
-func insertNewQuestion(db *sql.DB, uuid string, question string, possibleAnswers []interface{}){
+func insertNewQuestion(db *sql.DB, uuid string, question string, possibleAnswers []interface{}) {
 	fmt.Println(possibleAnswers)
 	fmt.Printf("[%s]: question %s mit uuid %s erstellt\n", time.Now(), question, uuid)
 	fmt.Println(time.Now())
@@ -48,9 +53,9 @@ func insertNewQuestion(db *sql.DB, uuid string, question string, possibleAnswers
 		uuid,
 		question,
 		"",
-		time.Now().Add(time.Hour * time.Duration(1) +
-			time.Minute * time.Duration(0) +
-			time.Second * time.Duration(0)),
+		time.Now().Add(time.Hour*time.Duration(1)+
+			time.Minute*time.Duration(0)+
+			time.Second*time.Duration(0)),
 	)
 	if err != nil {
 		fmt.Println(err)
@@ -76,6 +81,28 @@ func insertNewQuestion(db *sql.DB, uuid string, question string, possibleAnswers
 	}
 }
 
-func removeQuestion(db *sql.DB, uuid string){
+// TODO: implement a remove question function
+func removeQuestion(db *sql.DB, uuid string) {
 	fmt.Println(uuid)
+}
+
+type Question struct {
+	Id       int
+	Uuid     string
+	Question string
+	Answer   string
+	Endtime  time.Time
+}
+
+func getQuestion(uuid string) {
+	var question Question
+
+	// TODO: Leftjoin possibleAnswers
+	row := db.QueryRow("SELECT * FROM question WHERE uuid =? ", uuid)
+	err := row.Scan(&question.Id,&question.Question,&question.Uuid,&question.Answer,&question.Endtime,)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(question)
+
 }
