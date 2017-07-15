@@ -14,9 +14,9 @@ type Routes []Route
 
 var routes = Routes{
 	Route{
-		"index",
-		"GET",
-		"/a",
-		index_func,
+		"new_question",
+		"POST",
+		"/new/question",
+		new_question_func,
 	},
 }

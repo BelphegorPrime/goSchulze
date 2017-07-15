@@ -18,31 +18,31 @@ USE `poll`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `awnser`
+-- Table structure for table `answer`
 --
 
-DROP TABLE IF EXISTS `awnser`;
+DROP TABLE IF EXISTS `answer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `awnser` (
-  `ID` int(11) NOT NULL,
-  `questionID` int(11) DEFAULT NULL,
-  `value` varchar(45) DEFAULT NULL,
+CREATE TABLE `answer` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `questionID` int(11) NOT NULL ,
+  `value` varchar(45) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `possible_awnser`
+-- Table structure for table `possible_answer`
 --
 
-DROP TABLE IF EXISTS `possible_awnser`;
+DROP TABLE IF EXISTS `possible_answer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `possible_awnser` (
-  `ID` int(11) NOT NULL,
-  `questionID` int(11) DEFAULT NULL,
-  `value` varchar(45) DEFAULT NULL,
+CREATE TABLE `possible_answer` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `questionID` int(11) NOT NULL,
+  `value` varchar(45) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -57,8 +57,9 @@ DROP TABLE IF EXISTS `question`;
 CREATE TABLE `question` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `question` varchar(255) NOT NULL,
-  `awnser` varchar(255) NOT NULL,
-  `endtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `uuid` varchar(8) NOT NULL,
+  `answer` varchar(255) NOT NULL,
+  `endtime` timestamp NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

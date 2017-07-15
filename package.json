@@ -8,7 +8,7 @@
   "license": "COPYRIGHT Marcel Rösler",
   "scripts": {
     "start": "node webpack-server.js",
-    "clean": "rm -rf ../public/dist/*.js",
+    "clean": "rm -rf public/dist/*.js",
     "build": "npm run clean && webpack --config webpack.config.js"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "react-dom": "*",
     "react-redux": "*",
     "react-router": "*",
+    "react-router-dom": "^4.1.1",
     "react-router-redux": "*",
     "redux": "*",
     "redux-logger": "*",

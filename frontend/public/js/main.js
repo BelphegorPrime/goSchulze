@@ -1,11 +1,18 @@
-import React, {Component} from 'react';
-import ReactDom from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router, Route } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux';
-import { createBrowserHistory } from 'history';
+import React, {Component} from 'react'
+import ReactDom from 'react-dom'
+import { Provider } from 'react-redux'
+import { syncHistoryWithStore } from 'react-router-redux'
+import { createBrowserHistory } from 'history'
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    Link
+} from 'react-router-dom'
 
-import SiteApp from './components/siteApp';
+
+import SiteApp from './components/siteApp'
+import VoteApp from './components/voteApp'
 import store from './store';
 import './../css/main.css';
 
@@ -16,7 +23,12 @@ class Root extends Component {
         return <div>
             <Provider store={store}>
                 <Router history={history}>
-                    <Route path="/" component={SiteApp} />
+                    <div>
+                        <Switch>
+                            <Route exact path="/" component={SiteApp} />
+                            <Route path="/:uuid" component={VoteApp} />
+                        </Switch>
+                    </div>
                 </Router>
             </Provider>
         </div>
