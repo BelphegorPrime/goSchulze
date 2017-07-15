@@ -1,0 +1,6 @@
+{
+  "db_host": "127.0.0.1:3306",
+  "db_user": "user",
+  "db_password": "userpassword",
+  "database": "poll",
+}

@@ -1,0 +1,39 @@
+{
+  "name": "golang-react-webserver",
+  "author": "Marcel Rösler",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Startup template for golang apps with React frontend",
+  "main": "",
+  "license": "COPYRIGHT Marcel Rösler",
+  "scripts": {
+    "start": "node webpack-server.js",
+    "clean": "rm -rf ../public/dist/*.js",
+    "build": "npm run clean && webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "immutable": "*",
+    "material-ui": "*",
+    "react": "*",
+    "react-dom": "*",
+    "react-redux": "*",
+    "react-router": "*",
+    "react-router-redux": "*",
+    "redux": "*",
+    "redux-logger": "*",
+    "redux-thunk": "*"
+  },
+  "devDependencies": {
+    "babel-core": "*",
+    "babel-loader": "*",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
+    "css-loader": "*",
+    "react-hot-loader": "*",
+    "redux-devtools": "*",
+    "style-loader": "*",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.1",
+    "webpack-error-notification": "*"
+  }
+}

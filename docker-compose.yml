@@ -1,0 +1,35 @@
+version: '2'
+services:
+    go:
+        image: golang:1.6.1-alpine
+        volumes:
+          - .:/go/src/go-with-compose
+        working_dir: /go/src/go-with-compose
+        command: sh /go/src/go-with-compose/startup.sh
+        links:
+          - db:mysql
+        ports:
+          - 443:443
+        networks:
+          safe:
+            ipv4_address: 172.29.0.22
+    db:
+        build: database/.
+        image: custom-db
+        env_file: .env
+        ports:
+            - 3306:3306
+        volumes:
+            - ./db:/var/lib/mysql/
+        networks:
+          safe:
+            ipv4_address: 172.29.0.23
+
+networks:
+  safe:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.29.0.0/24
+        gateway: 172.29.0.21
