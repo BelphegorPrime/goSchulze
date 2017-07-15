@@ -10,8 +10,8 @@ class Question extends Component {
 
     onKeyUp(event){
         if(event.keyCode === 13){
-            this.props.possibleAwnsers[this.props.possibleAwnsers.length] = ""
-            this.props.dispatch({type:"SET_POSSIBLE_AWNSER_ROWS", possibleAwnsers: this.props.possibleAwnsers})
+            this.props.possibleAnswers[this.props.possibleAnswers.length] = ""
+            this.props.dispatch({type:"SET_POSSIBLE_ANSWERS_ROWS", possibleAnswers: this.props.possibleAnswers})
         }
     }
 

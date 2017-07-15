@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "immutable": "*",
-    "material-ui": "^0.18.4",
+    "material-ui": "*",
     "material-ui-background": "*",
     "react": "*",
     "react-dom": "*",
@@ -22,7 +22,8 @@
     "react-router-redux": "*",
     "redux": "*",
     "redux-logger": "*",
-    "redux-thunk": "*"
+    "redux-thunk": "*",
+    "superagent": "^3.5.2"
   },
   "devDependencies": {
     "babel-core": "*",
