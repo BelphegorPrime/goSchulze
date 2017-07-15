@@ -21,7 +21,6 @@ class SiteApp extends Component {
     }
 
     render() {
-        console.log(this.props.uuid)
         return <MuiThemeProvider muiTheme={appendMuiBackground(getMuiTheme(lightBaseTheme), dark)}>
                 <div className="site-content">
                     <Background className="background">
@@ -36,6 +35,5 @@ class SiteApp extends Component {
 export default connect((state, props, dispatch) => {
     return {
         dispatch: dispatch,
-        uuid: state.site.get("uuid"),
     };
 })(SiteApp)
