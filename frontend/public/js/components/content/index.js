@@ -15,7 +15,7 @@ class Content extends Component {
 
     render() {
         return <div className={this.props.className}>
-            <Question className="col-md-12"/>
+            <Question className="col-md-12" possibleAwnsers={this.props.possibleAwnsers} />
             <PossibleAwnsers className="col-md-12" possibleAwnsers={this.props.possibleAwnsers} />
             <div className="col-md-9"/>
             <RaisedButton className="col-md-3 save-btn" primary={true}

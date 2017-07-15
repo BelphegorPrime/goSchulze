@@ -8,6 +8,13 @@ class Question extends Component {
         this.props.dispatch({type:"SET_QUESTION", question: event.target.value})
     }
 
+    onKeyUp(event){
+        if(event.keyCode === 13){
+            this.props.possibleAwnsers[this.props.possibleAwnsers.length] = ""
+            this.props.dispatch({type:"SET_POSSIBLE_AWNSER_ROWS", possibleAwnsers: this.props.possibleAwnsers})
+        }
+    }
+
     render() {
         let floatingLabelStyle ={color: "#fffff"}
         return <div className={this.props.className}>
@@ -16,6 +23,7 @@ class Question extends Component {
                 floatingLabelText="Question"
                 floatingLabelStyle={floatingLabelStyle}
                 onChange={this.setQuestion.bind(this)}
+                onKeyUp={this.onKeyUp.bind(this)}
             />
         </div>
     }
