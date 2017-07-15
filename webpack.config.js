@@ -18,7 +18,7 @@ var config = {
         new WebpackErrorNotificationPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
-            __DEV__: false
+            __DEV__: true
         })
     ],
     module: {
