@@ -4,7 +4,8 @@
     text-align: center;
 }
 
-.question-textfield, .site-content, .possible-awnser-textfield, .possible-awnser-icon{
+.question-textfield, .site-content, .possible-awnser-textfield,
+.possible-awnser-icon, .possible-awnser-icon-minus{
     color: white !important;
 }
 
@@ -23,8 +24,12 @@
     height: 100%;
 }
 
-.question-textfield, .possible-awnser-textfield{
+.question-textfield {
     width:100% !important;
+}
+
+.possible-awnser-textfield{
+    width:90% !important;
 }
 
 .question-textfield input, .possible-awnser-textfield input{
@@ -37,5 +42,10 @@
 
 .possible-awnser-icon{
     width: 100% !important;
+    height: 72px !important;
+}
+
+.possible-awnser-icon-minus{
+    width: 72px !important;
     height: 72px !important;
 }
