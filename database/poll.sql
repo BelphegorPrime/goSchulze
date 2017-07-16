@@ -28,6 +28,7 @@ CREATE TABLE `answer` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `questionID` int(11) NOT NULL ,
   `value` varchar(45) NOT NULL,
+  `count` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

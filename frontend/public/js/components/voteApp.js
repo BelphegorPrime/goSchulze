@@ -5,7 +5,7 @@ import { MuiThemeProvider, getMuiTheme, createMuiTheme, lightBaseTheme } from 'm
 import Background, { appendMuiBackground, dark, light } from 'material-ui-background';
 
 import Sidebar from './sidebar/index'
-import Content from './content/index'
+import Content from './vote/content/index'
 
 import getQuestion from './../actions/getQuestion'
 

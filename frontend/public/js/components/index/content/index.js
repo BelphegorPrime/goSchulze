@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Question from './question'
 import PossibleAnswers from './possibleAnswers'
 
-import createNewQuestion from './../../actions/createNewQuestion'
+import createNewQuestion from '../../../actions/createNewQuestion'
 
 class Content extends Component {
 

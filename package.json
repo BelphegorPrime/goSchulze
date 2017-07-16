@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "immutable": "*",
+    "lodash": "^4.17.4",
     "material-ui": "*",
     "material-ui-background": "*",
     "react": "*",
@@ -24,7 +25,8 @@
     "redux": "*",
     "redux-logger": "*",
     "redux-thunk": "*",
-    "superagent": "^3.5.2"
+    "superagent": "^3.5.2",
+    "universal-cookie": "^2.0.8"
   },
   "devDependencies": {
     "babel-core": "*",

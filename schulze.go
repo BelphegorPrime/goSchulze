@@ -12,7 +12,7 @@ func schulzTest() {
 
 	var candidates []Candidate
 
-	inputCandidates := map[int]string{0: "A", 1: "B", 2: "C"}
+	inputCandidates := []string{"A", "B", "C"}
 	inputResults := map[string]map[string]int{
 		"A": {"B": 0, "C": 2},
 		"B": {"A": 4, "C": 6},
@@ -35,11 +35,11 @@ func schulzTest() {
 	fmt.Println(results)
 }
 
-func getPossibleOpponents(slice map[int]string, s int) map[int]string {
-	returnValue := map[int]string{}
+func getPossibleOpponents(slice []string, s int) []string {
+	returnValue := []string{}
 	for index, elemString := range slice {
 		if (index != s) {
-			returnValue[index] = elemString
+			returnValue = append(returnValue, elemString)
 		}
 	}
 	return returnValue

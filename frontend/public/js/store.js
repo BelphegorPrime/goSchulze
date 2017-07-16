@@ -4,9 +4,15 @@ import { createLogger } from 'redux-logger';
 import { browserHistory } from 'react-router'
 import thunk from 'redux-thunk';
 import { routerMiddleware, routerReducer } from 'react-router-redux'
-import site from './reducers/site'
 
-const siteApp = combineReducers({site, routing: routerReducer});
+import site from './reducers/indexSite'
+import vote from './reducers/vote'
+
+const siteApp = combineReducers({
+    site,
+    vote,
+    routing: routerReducer
+});
 const logger = createLogger();
 const middleware = routerMiddleware(browserHistory);
 const createStoreWithMiddleware = compose(

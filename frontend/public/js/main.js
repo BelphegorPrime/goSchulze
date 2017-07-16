@@ -11,7 +11,7 @@ import {
 } from 'react-router-dom'
 
 
-import SiteApp from './components/siteApp'
+import IndexSiteApp from './components/indexSiteApp'
 import VoteApp from './components/voteApp'
 import store from './store';
 import './../css/main.css';
@@ -25,7 +25,7 @@ class Root extends Component {
                 <Router history={history}>
                     <div>
                         <Switch>
-                            <Route exact path="/" component={SiteApp} />
+                            <Route exact path="/" component={IndexSiteApp} />
                             <Route path="/:uuid" component={VoteApp} />
                         </Switch>
                     </div>

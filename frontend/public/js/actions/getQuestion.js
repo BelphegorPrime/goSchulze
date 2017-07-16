@@ -5,8 +5,13 @@ export default function getQuestion(uuid){
         request.post('/get/question')
             .send({uuid})
             .end((error, response) => {
-                console.log(response)
-                console.log(error)
+                let returnValue = JSON.parse(response.text)
+                dispatch({
+                    type: "QUESTION_FOUND",
+                    question: returnValue["question"],
+                    possibleAnswers: returnValue["possibleAnswers"],
+                })
+                console.log(returnValue)
             })
     }
 }

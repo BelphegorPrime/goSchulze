@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"database/sql"
 	"time"
+	"encoding/json"
+	"strings"
 )
 
 func new_question_func(rw http.ResponseWriter, req *http.Request) {
@@ -18,12 +20,34 @@ func new_question_func(rw http.ResponseWriter, req *http.Request) {
 		insertNewQuestion(db, requestContent["uuid"].(string), requestContent["question"].(string), requestContent["possibleAnswers"].([]interface{}))
 	}
 
-	rw.Write([]byte([]byte("true")))
+	rw.Write([]byte("true"))
 }
 
 func get_question_func(rw http.ResponseWriter, req *http.Request) {
 	requestContent := lib.GetRequestContentFromRequest(req)
-	getQuestion(requestContent["uuid"].(string))
+	returnValue := getQuestion(requestContent["uuid"].(string))
+	b, err := json.Marshal(returnValue)
+	if err != nil {
+		fmt.Println(err)
+	}
+	rw.Write(b)
+}
+
+func get_result_func(rw http.ResponseWriter, req *http.Request) {
+	requestContent := lib.GetRequestContentFromRequest(req)
+	returnValue := getResult(db, requestContent["uuid"].(string))
+	fmt.Println(returnValue)
+}
+
+func new_answer_func(rw http.ResponseWriter, req *http.Request) {
+	requestContent := lib.GetRequestContentFromRequest(req)
+	returnValue := getQuestion(requestContent["uuid"].(string))
+
+	if !isAwnserAlreadyInDb(db, returnValue["question"].(Question).Id, requestContent["answer"].(string)) {
+		insertNewAnswer(db, returnValue["question"].(Question).Id, requestContent["answer"].(string))
+	} else {
+		updateAnswer(db, returnValue["question"].(Question).Id, requestContent["answer"].(string))
+	}
 }
 
 func isQuestionAlreadyInDb(db *sql.DB, uuid string) bool {
@@ -39,11 +63,20 @@ func isQuestionAlreadyInDb(db *sql.DB, uuid string) bool {
 	return false
 }
 
+func isAwnserAlreadyInDb(db *sql.DB, questionId int, answer string) bool {
+	var count int
+	row := db.QueryRow("SELECT COUNT(*) FROM answer WHERE questionID =? AND value=?", questionId, answer)
+	err := row.Scan(&count)
+	if err != nil {
+		fmt.Println(err)
+	}
+	if count > 0 {
+		return true
+	}
+	return false
+}
+
 func insertNewQuestion(db *sql.DB, uuid string, question string, possibleAnswers []interface{}) {
-	fmt.Println(possibleAnswers)
-	fmt.Printf("[%s]: question %s mit uuid %s erstellt\n", time.Now(), question, uuid)
-	fmt.Println(time.Now())
-	fmt.Println(time.Now().Add(time.Hour * time.Duration(1)))
 	res, err := db.Exec("INSERT INTO question("+
 		"uuid,"+
 		"question,"+
@@ -64,7 +97,6 @@ func insertNewQuestion(db *sql.DB, uuid string, question string, possibleAnswers
 		if err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Println("LastInsertId:", id)
 			for _, answer := range possibleAnswers {
 				_, err := db.Exec("INSERT INTO possible_answer("+
 					"questionID,"+
@@ -94,15 +126,153 @@ type Question struct {
 	Endtime  time.Time
 }
 
-func getQuestion(uuid string) {
-	var question Question
+type PossibleAnswer struct {
+	Id         int
+	QuestionId int
+	Value      string
+}
 
-	// TODO: Leftjoin possibleAnswers
+type Answer struct {
+	Id         int
+	QuestionId int
+	Value      string
+	Count      int
+}
+
+func getQuestion(uuid string) map[string]interface{} {
+	var question Question
+	var possibleAnswers []PossibleAnswer
+
 	row := db.QueryRow("SELECT * FROM question WHERE uuid =? ", uuid)
-	err := row.Scan(&question.Id,&question.Question,&question.Uuid,&question.Answer,&question.Endtime,)
+	err := row.Scan(&question.Id, &question.Question, &question.Uuid, &question.Answer, &question.Endtime, )
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(question)
+	if (&question.Id != nil) {
+		rows, err := db.Query("SELECT * FROM possible_answer WHERE questionId =? ", &question.Id)
+		if err != nil {
+			fmt.Println(err)
+		}
+		defer rows.Close()
+		for rows.Next() {
+			var possibleAnswer PossibleAnswer
+			if err := rows.Scan(&possibleAnswer.Id, &possibleAnswer.QuestionId, &possibleAnswer.Value); err != nil {
+				fmt.Println(err)
+			}
+			possibleAnswers = append(possibleAnswers, possibleAnswer)
+		}
+		if err := rows.Err(); err != nil {
+			fmt.Println(err)
+		}
+	}
 
+	returnValue := make(map[string]interface{})
+	returnValue["question"] = question
+	returnValue["possibleAnswers"] = possibleAnswers
+	return returnValue
+}
+
+func insertNewAnswer(db *sql.DB, questionId int, answer string) {
+	_, err := db.Exec("INSERT INTO answer("+
+		"questionID,"+
+		"count,"+
+		"value)"+
+		"VALUES(?,?,?)",
+		questionId,
+		1,
+		answer,
+	)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func updateAnswer(db *sql.DB, questionId int, answer string) {
+	var count int
+	row := db.QueryRow("SELECT a.count FROM answer AS a WHERE questionID =? AND value =?", questionId, answer)
+	err := row.Scan(&count)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	_, err = db.Exec("UPDATE answer SET "+
+		"count=? "+
+		"WHERE questionID=? AND value=?",
+		count+1,
+		questionId, answer)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func getResult(db *sql.DB, uuid string) map[string]interface{} {
+	returnValue := make(map[string]interface{})
+	var question Question
+	var answers []Answer
+
+	row := db.QueryRow("SELECT * FROM question WHERE uuid =? ", uuid)
+	err := row.Scan(&question.Id, &question.Question, &question.Uuid, &question.Answer, &question.Endtime, )
+	if err != nil {
+		fmt.Println(err)
+	}
+	if (&question.Id != nil) {
+		rows, err := db.Query("SELECT * FROM answer WHERE questionId =? ", &question.Id)
+		if err != nil {
+			fmt.Println(err)
+		}
+		defer rows.Close()
+		for rows.Next() {
+			var answer Answer
+			if err := rows.Scan(&answer.Id, &answer.QuestionId, &answer.Value, &answer.Count); err != nil {
+				fmt.Println(err)
+			}
+			answers = append(answers, answer)
+		}
+		if err := rows.Err(); err != nil {
+			fmt.Println(err)
+		}
+	}
+
+	schulzeInput, candidates := generateSchulzeInput(answers)
+
+	fmt.Println(candidates)
+
+	result := schulze(candidates, schulzeInput)
+	fmt.Println(result)
+
+
+	return returnValue
+}
+
+func generateSchulzeInput(answers []Answer) (map[string]map[string]int, []Candidate) {
+	schulzeInput := map[string]map[string]int{}
+	var candidates []Candidate
+	if len(answers) > 0 {
+		var answerValueArray = strings.Split(answers[0].Value, ">")
+		for index, value := range answerValueArray {
+			schulzeInput[value] = make(map[string]int)
+			opponents := []string{}
+			opponentsString := getPossibleOpponents(answerValueArray, index)
+			for _, opponentValue := range opponentsString {
+				opponents = append(opponents, opponentValue)
+			}
+			candidates = append(
+				candidates,
+				Candidate{value, opponents},
+			)
+		}
+
+		for _, answer := range answers {
+			var answerValueArray = strings.Split(answer.Value, ">")
+			fmt.Println(answerValueArray)
+			for i, answerValueI := range answerValueArray {
+				for j, answerValueJ := range answerValueArray {
+					if i == j-1 {
+						schulzeInput[answerValueI][answerValueJ] += answer.Count
+					}
+				}
+			}
+		}
+	}
+	return schulzeInput, candidates
 }

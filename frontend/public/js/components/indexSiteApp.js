@@ -5,9 +5,9 @@ import { MuiThemeProvider, getMuiTheme, createMuiTheme, lightBaseTheme } from 'm
 import Background, { appendMuiBackground, dark, light } from 'material-ui-background';
 
 import Sidebar from './sidebar/index'
-import Content from './content/index'
+import Content from './index/content/index'
 
-class SiteApp extends Component {
+class IndexSiteApp extends Component {
     static guid(){
         function string4() {
             return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -17,7 +17,7 @@ class SiteApp extends Component {
 
     constructor(props) {
         super(props)
-        props.dispatch({type: "SET_UUID", uuid: SiteApp.guid()})
+        props.dispatch({type: "SET_UUID", uuid: IndexSiteApp.guid()})
     }
 
     render() {
@@ -36,4 +36,4 @@ export default connect((state, props, dispatch) => {
     return {
         dispatch: dispatch,
     };
-})(SiteApp)
+})(IndexSiteApp)

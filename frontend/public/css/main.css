@@ -4,7 +4,9 @@
     text-align: center;
 }
 
-.question-textfield, .site-content, .possible-answer-textfield,
+.question-textfield, .site-content,
+.possible-answer-textfield,
+.possible-answer-vote-textfield,
 .possible-answer-icon, .possible-answer-icon-minus{
     color: white !important;
 }
@@ -37,11 +39,22 @@
     width:100% !important;
 }
 
+.possible-answer-vote-textfield{
+    width: 90% !important;
+}
+
 .possible-answer-textfield{
     width:90% !important;
 }
 
-.question-textfield input, .possible-answer-textfield input{
+.possible-answer-vote-input{
+    width: 8%;
+    margin: 1%;
+}
+
+.question-textfield input,
+.possible-answer-textfield input,
+.possible-answer-vote-textfield input{
     color: #ffffff !important;
 }
 
@@ -53,4 +66,14 @@
 .possible-answer-icon-minus{
     width: 72px !important;
     height: 72px !important;
+}
+
+.possible-answer-vote-input{
+    color: white !important;
+    text-align:center;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(0.12, #333));
+    background: -moz-gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(0.12, #333));
+    background: -o-gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(0.12, #333));
+    background: -ms-gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(0.12, #333));
+    background:  gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(0.12, #333));
 }
